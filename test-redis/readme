@@ -1,0 +1,7 @@
+linux redis 安装包 在下边
+
+安装
+tar -zxfv redis-3.0.7.tar.gz
+
+启动
+./src/redis-server.sh

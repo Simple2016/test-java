@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<frame width="300" height="400">
+    <lqw.test.test_swing.compent.MyPanel background-color="0xFFFF0000" x="14" y="58" width="30" height="30" click="lqw.test.test_swing.listener.TestMouseAdapter"/>
+    <lqw.test.test_swing.compent.MyPanel background-color="0xFFFFFF00" x="15" y="93" width="82" height="51" click="lqw.test.test_swing.listener.TestMouseAdapter"/>
+    <lqw.test.test_swing.compent.MyPanel background-color="0xFF0000FF" x="14" y="26" width="30" height="30" click="lqw.test.test_swing.listener.TestMouseAdapter"/>
+</frame>

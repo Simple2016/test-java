@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="
+                         http://www.springframework.org/schema/context 
+                         http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                         http://www.springframework.org/schema/beans 
+                         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                         http://www.springframework.org/schema/jdbc 
+                         http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+                         http://www.springframework.org/schema/tx 
+                         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                         http://www.springframework.org/schema/aop 
+                         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                         http://code.alibabatech.com/schema/dubbo
+                         http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<context:property-placeholder location="classpath:*.properties" />
+	<context:component-scan base-package="com.bs.einvoice.rest" />
+	<import resource="dubbo-consumer.xml" />
+	
+	<!-- <bean id="serviceContextHelper" class="com.bs.einvoice.rest.helper.SpringContextHelper"
+		lazy-init="false"></bean> -->
+	<bean id="paramManmgerHelpher" class="com.bs.einvoice.rest.helper.ParamManmgerHelpher">
+		<property name="serviceParamsConfigPath" value="security/service-params.xml" />
+	</bean>
+	<bean id="processManager" class="com.bs.einvoice.rest.process.ProcessManagerImpl">
+		<property name="processMapp">
+			<map>
+				<entry key="inquireEInvoice" value-ref="inquireEInvoiceProcess"></entry>
+				<entry key="inquireEInvoiceByRandomNumber" value-ref="inquireEInvoiceByRandNumProcess"></entry>
+				<entry key="verifyEInvoiceByImg" value-ref="verifyEInvoiceByImgProcess"></entry>
+				<entry key="verifyEInvoiceByXml" value-ref="verifyEInvoiceByXmlProcess"></entry>
+				<entry key="accountForRecode" value-ref="accountForRecodeProcess"></entry>
+				<entry key="generateSignXml" value-ref ="generateSignXmlProcess"></entry>
+				<entry key="issueEInvoice" value-ref="issueEInvoiceProcess"></entry>
+				<entry key="issueScarletLetterEInvoice" value-ref="issueScarletLetterEInvoiceProcess"></entry>
+				<entry key="statusChange" value-ref="statusChangeProcess"></entry>
+				<entry key="statusChange4Pager" value-ref="statusChange4PagerProcess"></entry>				
+				<entry key="cancelStatusChange" value-ref="cancelStatusChangeProcess"></entry>
+				<entry key="uploadTemplate" value-ref="uploadTemplateProcess"></entry>
+				<entry key="uploadCers" value-ref="uploadCersProcess"></entry>		
+				<entry key="uploadSeal" value-ref="uploadSealProcess"></entry>	
+				<entry key="updateSeal" value-ref="updateSealProcess"></entry>
+				<entry key="downloadEInvoiceZip" value-ref="downloadEInvoiceZipProcess"></entry>	
+				<entry key="subscribeAddAccount" value-ref="subscribeProcess"></entry>
+				<entry key="addEInvoice2OrgAccount" value-ref="addEInvoice2OrgAccountProcess"></entry>
+				<entry key="addEInvoice2PersonalAccount" value-ref="addEInvoice2PersonalAccountProcess"></entry>
+			    <entry key="download4AccountByCode" value-ref="download4AccountByCodeProcess"></entry>
+			    <entry key="download4AccountByDate" value-ref="download4AccountByDateProcess"></entry>			   
+			    <entry key="accountForInquire" value-ref="accountForInquireProcess"></entry>
+			    <entry key="inquireEInvoiceByRNumberAndPPName" value-ref="inquireEInvoiceByRandNumAndPayPartyNameProcess"></entry>
+			    <entry key="accountForInquireByApp" value-ref="accountForInquireByAppProcess"></entry>			   	
+			    <entry key="sendMsg" value-ref="sendMsgProcess"></entry>
+			    <entry key="echo" value-ref="echoProcess"></entry>								
+			</map>
+		</property>
+	</bean>
+	<bean id="jedisConnMamager" class="com.bs.einvoice.commons.redis.JedisConnMamager">
+	   <property name="redisHost" value="${redisHost}"/>
+	   <property name="maxIdle" value="${maxIdle}"></property>
+	   <property name="maxTotal" value="${maxTotal}"></property>
+	   <property name="minIdle" value="${minIdle}"></property>
+	   <property name="password" value="${password}"></property>
+	   <property name="redisProt" value="${redisProt}"></property>
+	   <property name="maxWaitMillis" value="${maxWaitMillis}"></property>
+	   <property name="timeout" value="${timeout}"></property>
+	</bean>
+	<bean id="restInterceptorManager" class="com.bs.einvoice.rest.web.RestInterceptorManager">
+	   <property name="restInterceptors">
+	   		<list>
+	   			<ref bean="appHmacVerifyAndBuilderMessageInterceptor"/>
+	   			<ref bean="serviceParamsVerifyInterceptor"/>
+	   			<!-- <ref bean="appCallAuthInterceptor"/>
+	   			<ref bean="appCallLimitedInterceptor"/>-->
+	   		</list>
+	   </property>
+	</bean>
+
+	<!--数据连接配置-->
+	<bean id="dataSource" class="com.bs.einvoice.commons.datasource.PhoenixDatasource">
+		<property name="url" value="${url}"></property>
+		<property name="driver" value="${driver}"></property>
+		<property name="autoCommit" value="${autoCommit}"></property>
+	</bean>
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="mapperLocations" value="classpath*:mapper/**/*.xml" />
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- <property name="annotationClass" value="org.springframework.stereotype.Repository" 
+			/> -->
+		<property name="basePackage" value="com.bs.einvoice.rest.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	</bean>
+	<bean class="com.bs.einvoice.commons.intercepter.Perf4jInterceptor"
+		id="perf4jInterceptor" />
+	<bean
+		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="beanNames">
+			<list>
+				<value>*Process</value>
+			</list>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>perf4jInterceptor</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>ApplicationResources</value>
+			</list>
+		</property>
+		<property name="useCodeAsDefaultMessage" value="true" />
+	</bean>
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+
+
+</beans>

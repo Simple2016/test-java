@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel='stylesheet' href='assets/css/index.css'>
+<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script	src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
+<script	src="http://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+</head>
+
+<body ng-app="articleApp" ng-controller="articlesCtrl">
+	<!-- 顶部栏 开始-->
+	<div class="topbar">
+		<div style="float:right;margin:10px;">
+			<input  ng-model="s"/>
+			<button ng-click="search()" style="background-color:white">search</button>
+		</div>
+		<a style="margin:10px;" class="btn" href="./manage/login.html">login</a>
+	</div>
+	<!-- 顶部栏 结束-->
+	<!-- 内容开始 -->
+	<div class="description">
+		<div class="row clearfix">
+			<div class="col-md-12">
+				<div class="page-header">
+					<!-- <h1 style='text-align:center'>
+						渐 <small>liqw</small>
+					</h1>  -->						
+				</div>					
+				<div ng-repeat="x in articles">
+					<a href="./manage/detailArticle.html?Id={{ x.articleldId}}"><h3  ng-bind="x.title"></h3></a>
+					<div class='inline' ng-bind="x.createTime"></div><br>
+					<span class="glyphicon glyphicon-tags"></span><a class="btn" ng-click="search(y.groupName)" ng-repeat="y in x.groupList  track by  $index">{{y.groupName}}</a>
+					<p ng-bind-html="x.content|to_trusted"></p>
+					<p ng-if="logined=='true'">
+						<a class="btn" href="./manage/detailArticle.html?Id={{ x.articleldId}}">View details »</a>
+						<a class="btn" href='./manage/modifyArticle.html?Id={{ x.articleldId}}'>Modify »</a>
+						<a class="btn" href='./manage/addArticle.html'>Add »</a>
+						<a class="btn" ng-click="delArticle(x.articleldId)">Del »</a>
+					</p>
+					<hr>
+				</div>
+				<div ng-if="pageNumber != 0"><a class="btn" ng-click="previousPage()" style="float:left">« Previous Page</a></div>				
+				<div ng-if="pageNumber+1 != pageCount"><a class="btn" ng-click="nextPage()" style="float:right">Next Page »</a></div>
+				
+				<!-- <div ng-bind="pageNumber"></div>
+				<div ng-bind="pageCount"></div>
+				<div ng-bind="logined"></div> -->
+			</div>
+		</div>
+	</div>
+	<!-- 内容结束 -->
+	<script	src="assets/js/index.js"></script>
+
+
+</body>
+</html>

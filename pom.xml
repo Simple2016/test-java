@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>lqw.test</groupId>
+    <artifactId>test</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>test</name>
+    <url>http://maven.apache.org</url>
+
+    <modules>
+        <module>test-dom4j</module>
+        <module>test-dubbo</module>
+        <module>test-dubbox</module>
+        <module>test-enum</module>
+        <module>test-excell-xls</module>
+        <module>test-excell-xls-xlsx</module>
+        <module>test-img</module>
+        <module>test-jmeter</module>
+        <module>test-junit</module>
+        <module>test-log4j</module>
+        <module>test-logback</module>
+        <module>test-object</module>
+        <module>test-perf4j</module>
+        <module>test-redis</module>
+        <module>test-regex</module>
+        <module>test-spring</module>
+        <module>test-spring-aop</module>
+        <module>test-swing</module>
+        <module>test-swing-jna</module>
+        <module>test-swing-shade</module>
+        <module>test-tag</module>
+        <module>test-ticket</module>
+        <module>webtest-angular</module>
+        <module>webtest-blog</module>
+        <module>webtest-dubbo-stream</module>
+        <module>webtest-echart</module>
+        <module>test-reflect</module>
+    </modules>
+</project>

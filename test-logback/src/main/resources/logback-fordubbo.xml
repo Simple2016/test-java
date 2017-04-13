@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://ch.qos.logback/xml/ns/logback"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://ch.qos.logback/xml/ns/logback http://ch.qos.logback/xml/ns/logback/logback.xsd">
+
+
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>[%d{yyyy-MM-dd HH:mm:ss}] %-5level %c\(%file:%line\) -
+				%msg%n</Pattern>
+		</encoder>
+	</appender>
+	<appender name="error"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<append>true</append>
+		<prudent>true</prudent>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>ERROR</level>
+			<OnMatch>ACCEPT</OnMatch>
+			<OnMismatch>DENY</OnMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/error.log
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<charset>utf-8</charset>
+			<pattern>
+				[%d{yyyy-MM-dd HH:mm:ss}] %-5level %c - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<appender name="info"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<append>true</append>
+		<prudent>true</prudent>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+			<OnMatch>ACCEPT</OnMatch>
+			<OnMismatch>DENY</OnMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/info.log
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<charset>utf-8</charset>
+			<pattern>
+				[%d{yyyy-MM-dd HH:mm:ss}] %-5level %c - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<appender name="bs"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<append>true</append>
+		<prudent>true</prudent>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>DEBUG</level>
+			<OnMatch>ACCEPT</OnMatch>
+			<OnMismatch>DENY</OnMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/bs.log
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<charset>utf-8</charset>
+			<pattern>
+				[%d{yyyy-MM-dd HH:mm:ss}] %-5level %c - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<appender name="security"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<append>true</append>
+		<prudent>true</prudent>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>DEBUG</level>
+			<OnMatch>ACCEPT</OnMatch>
+			<OnMismatch>DENY</OnMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/security.log
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<charset>utf-8</charset>
+			<pattern>
+				[%d{yyyy-MM-dd HH:mm:ss}] %-5level %c - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<appender name="mybatis"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<append>true</append>
+		<prudent>true</prudent>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>DEBUG</level>
+			<OnMatch>ACCEPT</OnMatch>
+			<OnMismatch>DENY</OnMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/mybatis.log
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<charset>utf-8</charset>
+			<pattern>
+				[%d{yyyy-MM-dd HH:mm:ss}] %-5level %c - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="com.bs.einvoice" level="DEBUG" additivity="true">
+		<appender-ref ref="bs" />
+	</logger>
+	<logger name="com.bs.einvoice.security" level="DEBUG"
+		additivity="true">
+		<appender-ref ref="security" />
+	</logger>
+	<logger name="org.apache.ibatis" level="DEBUG" additivity="true">
+		<appender-ref ref="mybatis" />
+	</logger>
+
+	<root level="DEBUG">
+		<appender-ref ref="console" />
+		<appender-ref ref="error" />
+		<appender-ref ref="info" />
+	</root>
+</configuration>
+<!--简化非异步dubbo版-->

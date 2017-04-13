@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://ch.qos.logback/xml/ns/logback"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://ch.qos.logback/xml/ns/logback http://ch.qos.logback/xml/ns/logback/logback.xsd">
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<OnMatch>ACCEPT</OnMatch>
+			<OnMismatch>DENY</OnMismatch>
+		</filter>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>[%d{yyyy-MM-dd HH:mm:ss}] %-5level %c\(%file:%line\) -
+				%msg%n</pattern>
+		</layout>
+	</appender>
+
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>DEBUG</level>
+			<OnMatch>ACCEPT</OnMatch>
+			<OnMismatch>DENY</OnMismatch>
+		</filter>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>[%d{yyyy-MM-dd HH:mm:ss}] %-5level %c\(%file:%line\) -
+				%msg%n</pattern>
+		</layout>
+	</appender>
+
+
+	<appender name="logtest"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<append>true</append>
+		<prudent>true</prudent>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>DEBUG</level>
+			<OnMatch>ACCEPT</OnMatch>
+			<OnMismatch>DENY</OnMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/logtest.log.%d{yyyy-MM-dd}</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<immediateFlush>false</immediateFlush>
+			<charset>utf-8</charset>
+			<pattern>
+				<!-- %d{yyyy-MM-dd HH:mm:ss}] %-5level %c\(%file:%line\) - %msg%n -->
+				%d{yyyy-MM-dd HH:mm:ss}] %-5level %c\(\) - %msg%n 
+			</pattern>
+		</encoder>
+		<!-- <layout class="ch.qos.logback.classic.PatternLayout"> <Pattern>[%d{yyyy-MM-dd 
+			HH:mm:ss}] %-5level %c\(%file:%line\) - %msg%n</Pattern> </layout> -->
+	</appender>
+
+
+
+	<appender name="logtestinner"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<append>true</append>
+		<prudent>false</prudent>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>DEBUG</level>
+			<OnMatch>ACCEPT</OnMatch>
+			<OnMismatch>DENY</OnMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/logtestInner.log.%d{yyyy-MM-dd}
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<immediateFlush>true</immediateFlush>
+			<charset>utf-8</charset>
+			<pattern>
+				%d{yyyy-MM-dd HH:mm:ss}] %-5level %c\(%file:%line\) - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="queue_logger" class="ch.qos.logback.classic.AsyncAppender">
+		<discardingThreshold>0</discardingThreshold>
+		<queueSize>2048</queueSize>
+		<includeCallerData>true</includeCallerData>
+		<appender-ref ref="logtestinner" />
+	</appender>
+
+	<appender name="queue_root" class="ch.qos.logback.classic.AsyncAppender">
+		<discardingThreshold>0</discardingThreshold>
+		<queueSize>2048</queueSize>
+		<includeCallerData>false</includeCallerData>
+		<neverBlock>false</neverBlock>
+		<maxFlushTime>5000</maxFlushTime>
+		<appender-ref ref="logtest" />
+	</appender>
+
+	<appender name="queue_console" class="ch.qos.logback.classic.AsyncAppender">
+		<discardingThreshold>0</discardingThreshold><!-- 若不设置，超出队列的info级别及以下的日志会被丢弃 -->
+		<queueSize>2048</queueSize><!-- 阻塞队列长度 -->
+		<includeCallerData>true</includeCallerData><!-- 获取调用者信息，但会耗费性能 -->
+		<neverBlock>true</neverBlock>
+		<!-- <maxFlushTime>3000</maxFlushTime> --><!-- LoggerContext停止后，刷入日志的超时时间，超时的日志将会被丢弃 -->
+		<appender-ref ref="console" />
+	</appender>
+
+	<!-- <logger name="lqw.test.test_log.inner.LogTestInner" level="DEBUG" additivity="false"> 
+		<appender-ref ref="queue_logger" /> </logger> -->
+	<root level="DEBUG">
+		<appender-ref ref="queue_root" />
+		<!-- <appender-ref ref="queue_console" /> -->
+	</root>
+</configuration>
+<!--最初测试版-->

@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script
+	src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
+</head>
+<body>
+
+	<div ng-app="myApp" ng-controller="personCtrl">
+
+		value:<input type=text ng-model="number"><br>
+		factory/service:<input type=text ng-model="math"><br> <br>
+		config:<input type=text ng-model="math2"><br>
+
+	</div>
+
+	<script>
+		var app = angular.module('myApp', []);
+		app.value("defaultInput", 7);
+		app.factory('MathService', function() {
+			var factory = {};
+
+			factory.multiply = function(a, b) {
+				return a * b
+			}
+			return factory;
+		});
+
+		app.service('CalcService', function(MathService) {
+			this.square = function(a) {
+				return MathService.multiply(a, a);
+			}
+		});
+		app.provider('greeting', function() {
+			this.$get = function() {
+				return function(name) {
+					alert("Hello, " + name);
+				};
+			};
+		});
+
+		/* factory，service以及value全部都是用来定义一个providr的简写 */
+		/* 在幕后，AngularJS实际上是在调用下面出现的代码（就是$provide.provider的版本） */
+		app.config(function($provide) {			
+			$provide.provider('MathService2', function() {
+				this.$get = function() {
+					var factory = {};
+					factory.multiply = function(a, b) {
+						return a * b / 2;
+					}
+					return factory;
+				};
+			});
+		});
+
+		app.controller('personCtrl', function($scope, defaultInput,
+				CalcService, MathService2, $injector) {
+			$scope.number = defaultInput;
+			$scope.math = CalcService.square(defaultInput);
+			$scope.math2 = MathService2.multiply(defaultInput, defaultInput);
+			
+			/* 一旦你拥有了$injector，你可以动过调用get函数来获得任何一个已经被定义过的服务的实例 */
+			var greeting = $injector.get('greeting');
+			greeting('bookman');
+			/* 注入器同样也负责将服务注入到函数中 */
+			var myFunction = function(greeting) {
+				greeting('Prefect');
+			};
+			$injector.invoke(myFunction);
+		});
+	</script>
+
+</body>
+</html>

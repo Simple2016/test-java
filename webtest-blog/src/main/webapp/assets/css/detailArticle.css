@@ -1,0 +1,9 @@
+@CHARSET "UTF-8";
+body {
+    background: url(../images/tbg.jpg) ;
+    min-height: 100vh;
+    box-sizing: border-box;
+    margin: 0;
+    padding: calc(50vh - 16em) 0px calc(50vh - 16em) 0px;
+    font: 150%/1.6 宋体,Baskerville, Palatino, serif;
+}

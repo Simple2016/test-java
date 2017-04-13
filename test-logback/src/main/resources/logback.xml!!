@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://ch.qos.logback/xml/ns/logback"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://ch.qos.logback/xml/ns/logback http://ch.qos.logback/xml/ns/logback/logback.xsd">
+
+	<appender name="logtest"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<append>true</append>
+		<prudent>true</prudent>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>DEBUG</level>
+			<OnMatch>ACCEPT</OnMatch>
+			<OnMismatch>DENY</OnMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/logtest.log.%d{yyyy-MM-dd}</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<immediateFlush>true</immediateFlush>
+			<charset>utf-8</charset>
+			<pattern>
+				<!-- %d{yyyy-MM-dd HH:mm:ss}] %-5level %c\(%file:%line\) - %msg%n -->
+				%d{yyyy-MM-dd HH:mm:ss}] %-5level %c - %msg%n
+			</pattern>
+		</encoder>
+		<!-- <layout class="ch.qos.logback.classic.PatternLayout"> <Pattern>[%d{yyyy-MM-dd 
+			HH:mm:ss}] %-5level %c\(%file:%line\) - %msg%n</Pattern> </layout> -->
+	</appender>
+
+	<appender name="queue_root" class="ch.qos.logback.classic.AsyncAppender">
+		<discardingThreshold>0</discardingThreshold>
+		<queueSize>1000000</queueSize>
+		<includeCallerData>false</includeCallerData>
+		<neverBlock>false</neverBlock>
+		<maxFlushTime>30000</maxFlushTime>
+		<appender-ref ref="logtest" />
+	</appender>
+
+	
+	<root level="DEBUG">
+		 <appender-ref ref="queue_root" /> 
+	</root>
+</configuration>
+<!--简化异步版-->

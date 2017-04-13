@@ -1,0 +1,64 @@
+1.下载安装
+
+    首先安装jdk7.0以上版本，并且配置环境变量
+    export JAVA_HOME=/usr/java/jdk1.7.0_67-cloudera
+    export PATH=$JAVA_HOME/bin:$PATH
+
+　　访问此网站  https://mirrors.tuna.tsinghua.edu.cn/apache/jmeter/binaries/  下载安jmeter装包apache-jmeter-3.0.tgz
+
+　　使用xshell上传至linux服务器 /home/soft/jmeter/ 目录，解压命令： tar -zxvf apache-jmeter-3.0.tgz  
+
+2.配置环境变量（让jmeter可以在任何目录执行）
+
+　　vim /etc/profile
+
+　　在最后加入：
+
+　　export JAVA_HOME=/usr/java/jdk1.7.0_67-cloudera
+    
+export JMETER_HOME=/home/soft/jmeter/apache-jmeter-3.0
+export 
+    PATH=$JAVA_HOME/bin:$JMETER_HOME/bin:$PATH
+
+　　保存后，source /etc/profile 使环境变量生效。
+
+　　jmeter -v 确认是否配置成功。
+
+3.运行jmeter
+
+　　需要在Jmeter的windows图像界面中创建好测试计划，保存测试计划为：xxx.jmx，然后上传到linux的/home/soft/jmeter/apache-jmeter-3.0/testplan目录下。
+
+　　测试计划最好不要包含监听器,因为命令行启动的话监听器可能会占用资源而且有没有任何视图效果。
+
+　　创建一个jtl用来接收结果。touch *.jtl
+
+　　在linux下执行：
+
+　　jmeter -n -t /home/soft/jmeter/apache-jmeter-2.13/testplan/test03.jmx -l  *.jtl
+
+    jmeter -n -t /home/soft/jmeter/apache-jmeter-2.13/testplan/aa08.jmx -l  *.jtl
+
+    jmeter -n -t /soft/jmeter/apache-jmeter-3.0/testplan/aa.jmx
+
+    /home/soft/jmeter/apache-jmeter-2.13/testplan
+
+　　　　参数说明 :
+　　　　-n  告诉jmeter使用nogui模式运行测试
+　　　　-t  执行的测试脚本名
+ 
+
+出现下面的日志表示运行成功。（此日子为空）
+
+Writing log file to: /home/soft/jmeter/apache-jmeter-3.0/bin/jmeter.log
+Creating summariser <summary>
+Created the tree successfully using /home/soft/jmeter/apache-jmeter-3.0/testplan/report2.jmx
+Starting the test @ Mon Aug 22 11:16:43 CST 2016 (1471835803421)
+Waiting for possible Shutdown/StopTestNow/Heapdump message on port 4445
+summary =      0 in 00:00:00 = ******/s Avg:     0 Min: 9223372036854775807 Max: -9223372036854775808 Err:     0 (0.00%)
+Tidying up ...    @ Mon Aug 22 11:16:44 CST 2016 (1471835804601)
+... end of run
+
+具体详情可以到/home/soft/jmeter/apache-jmeter-3.0/bin/jmeter.log　日志文件里去查看
+具体详情可以到/home/soft/jmeter/apache-jmeter-2.3/bin/jmeter.log  日志文件里去查看
+
+
