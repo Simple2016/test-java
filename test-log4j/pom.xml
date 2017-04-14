@@ -24,8 +24,6 @@
 		</dependency>
 
 		<!-- log4j start -->
-		<!-- <dependency> <groupId>commons-logging</groupId> <artifactId>commons-logging</artifactId> 
-			<version>1.2</version> </dependency> -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
@@ -37,16 +35,8 @@
 			<version>1.7.7</version>
 		</dependency>
 		<!-- log4j end -->
-
 		<!-- log end -->
 
-		<!-- perf start -->
-		<dependency>
-			<groupId>org.perf4j</groupId>
-			<artifactId>perf4j</artifactId>
-			<version>0.9.16</version>
-		</dependency>
-		<!-- perf end -->
 
 		<!-- junit start -->
 		<dependency>
@@ -54,13 +44,22 @@
 			<artifactId>junit</artifactId>
 			<version>4.10</version>
 		</dependency>
+		<!-- junit end -->
+		<!-- perf start -->
+		<dependency>
+			<groupId>org.perf4j</groupId>
+			<artifactId>perf4j</artifactId>
+			<version>0.9.16</version>
+		</dependency>
 		<dependency>
 			<groupId>org.databene</groupId>
 			<artifactId>contiperf</artifactId>
 			<version>2.2.0</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- junit end -->
+		<!-- perf end -->
+
+
 	</dependencies>
 
 </project>

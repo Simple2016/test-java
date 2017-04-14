@@ -8,6 +8,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  *
  * @ClassName 类名：LogTest
@@ -35,10 +37,10 @@ public class LogTest {
     @Rule
     public ContiPerfRule contiPerfRule = new ContiPerfRule();
 
-    int i = 1;
+    AtomicInteger i = new AtomicInteger(1);
 
     @Test
-    @PerfTest(invocations = 1, threads = 1) // 注意大于1个线程对计数有影响
+    @PerfTest(invocations = 10, threads = 10)
     public void test() throws InterruptedException {
 
         logger.error(getLine() + "line");
@@ -50,7 +52,7 @@ public class LogTest {
     }
 
     public int getLine() {
-        return i++;
+        return i.incrementAndGet();
     }
 
     @AfterClass
