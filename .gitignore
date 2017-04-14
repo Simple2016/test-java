@@ -28,4 +28,7 @@ logs/
 
 # system ignore
 .DS_Store
-Thumbs.db
+Thumbs
+
+
+webtest-blog/src/main/resources/jdbc.properties
