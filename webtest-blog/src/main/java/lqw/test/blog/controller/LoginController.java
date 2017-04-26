@@ -30,7 +30,7 @@ import lqw.test.blog.util.cacheHelper;
  * @version 版本号：V1.0
  *          <p>
  ***************************          修订记录*************************************
- * 
+ *
  *          2016年11月8日 liqw 创建该类功能。
  *
  ***********************************************************************
@@ -45,7 +45,7 @@ public class LoginController {
 	private UserService userService;
 
 	@RequestMapping(value = "login.do", method = RequestMethod.POST)
-	public void login(HttpServletRequest request, HttpServletResponse response)  throws Exception{		
+	public void login(HttpServletRequest request, HttpServletResponse response)  throws Exception{
 		log.debug("---login---");
 		HttpSession session=request.getSession();
 		if(session.isNew()){
@@ -66,7 +66,7 @@ public class LoginController {
 		}
 	}
 
-	
+
 
 	@RequestMapping(value = "register.do", method = RequestMethod.POST)
 	public void register(HttpServletRequest request, HttpServletResponse response) {

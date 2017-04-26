@@ -8,14 +8,15 @@
 <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script	src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
 <script	src="http://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+	<script	src="assets/js/index.js"></script>
 </head>
 
 <body ng-app="articleApp" ng-controller="articlesCtrl">
 	<!-- 顶部栏 开始-->
 	<div class="topbar">
 		<div style="float:right;margin:10px;">
-			<input  ng-model="s"/>
-			<button ng-click="search()" style="background-color:white">search</button>
+			<input id="search-input" ng-model="s" onkeyup="searchenter(event)"/>
+			<button id="search-btn" ng-click="search()" style="background-color:white">search</button>
 		</div>
 		<a style="margin:10px;" class="btn" href="./manage/login.html">login</a>
 	</div>
@@ -52,7 +53,7 @@
 		</div>
 	</div>
 	<!-- 内容结束 -->
-	<script	src="assets/js/index.js"></script>
+
 
 
 </body>

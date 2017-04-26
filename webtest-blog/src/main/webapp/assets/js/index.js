@@ -61,7 +61,7 @@ angular.module('articleApp', [])
 			};
 
 			$scope.search();
-			
+
 		})
 		.filter(  
 		   'to_trusted', ['$sce', function ($sce) {  
@@ -83,7 +83,7 @@ $(function () {
 	 else {
 	 }
 });
-	 
+
 $(window).scroll(function () {
 	 var str = window.location.href;
 	 str = str.substring(str.lastIndexOf("/") + 1);
@@ -95,6 +95,15 @@ $(window).scroll(function () {
 	 return $.cookie(str);
 });
 
-	    
+
+function searchenter(event) {
+    event = event || window.event;
+    if (event.keyCode == 13) {
+        if ($('#search-input').val() == '') {
+            return false;
+        }
+        $("#search-btn").click();
+    }
+}
 	    
 	    
