@@ -43,7 +43,7 @@ public enum Vegetable {
 
     public static Vegetable getEnumByName(String name) {
         for (Vegetable status : Vegetable.values()) {
-            if (status.name() == name) {
+            if (status.name() .equals(name) ) {
                 return status;
             }
         }
