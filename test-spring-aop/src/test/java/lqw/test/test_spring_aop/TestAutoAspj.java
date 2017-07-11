@@ -16,9 +16,9 @@ public class TestAutoAspj {
 
 	@org.junit.Test
 	public void test1() throws InterruptedException {
-		// testService.addPerson("xiaoming");
-		// testService.deletePerson("xiaoming");
-		testService.editPerson("xiaoming");
+		testService.addPerson("xiaoming");
+		//testService.deletePerson("xiaoming");
+		//testService.editPerson("xiaoming");
 	}
 
 }

@@ -40,6 +40,8 @@ public class TestXpath {
         String xpath = "/root/element/@a1";// element的属性
         String text = selectSingleNode(document, xpath).getText();
         System.err.println(text);
+        //没有命名空间可以直接获取
+        System.err.println(document.selectSingleNode(xpath).getText());
     }
 
     public static XPath createXPath(Document document, String xpath) {

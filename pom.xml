@@ -18,7 +18,7 @@
         <module>test-excell-xls</module>
         <module>test-excell-xls-xlsx</module>
         <module>test-img</module>
-        <module>test-jmeter</module>
+        <!--<module>test-jmeter</module>-->
         <module>test-junit</module>
         <module>test-log4j</module>
         <module>test-logback</module>
@@ -38,5 +38,6 @@
         <module>webtest-dubbo-stream</module>
         <module>webtest-echart</module>
         <module>test-reflect</module>
+        <module>test-socket</module>
     </modules>
 </project>
