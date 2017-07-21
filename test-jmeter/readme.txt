@@ -7,9 +7,11 @@ jorphan.jar
 logkit-2.0.jar
 上边5个jar包 jmeter程序中都有，需要引进来
 
-export成runnable java file 
+将 测试程序 打成jar 包
 
 放进jmeter目录下 lib/ext下
+
+如果不是fatjar,需要将依赖的jar 也放进lib 中
 
 
 
