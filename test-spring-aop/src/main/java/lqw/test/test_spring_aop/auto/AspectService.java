@@ -2,18 +2,12 @@ package lqw.test.test_spring_aop.auto;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.AfterThrowing;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 
 @Component
 @Aspect
-public class SimpleAspect {
+public class AspectService {
 
     @Pointcut("execution(* lqw.test.test_spring_aop.auto.*Service*.*(..))")
     public void pointCut() {

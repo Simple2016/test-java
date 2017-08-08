@@ -1,5 +1,6 @@
 package lqw.test.test_spring_aop;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -12,7 +13,7 @@ public class TestAspj {
 	@Autowired
 	private TargetClass testService;
 
-	@org.junit.Test
+	@Test
 	public void test1() throws InterruptedException {
 		testService.targetMethod();
 	}
