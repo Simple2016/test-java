@@ -42,5 +42,23 @@
         <module>test-httpclient</module>
         <module>test-jetty-7</module>
         <module>test-jetty-9</module>
+        <module>test-observer</module>
+        <module>test-util</module>
+        <module>test-bug</module>
+        <module>test-aspectj</module>
     </modules>
+    <profiles>
+        <profile>
+            <id>jdk-1.7</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <jdk>1.7</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.source>1.7</maven.compiler.source>
+                <maven.compiler.target>1.7</maven.compiler.target>
+                <maven.compiler.compilerVersion>1.7</maven.compiler.compilerVersion>
+            </properties>
+        </profile>
+    </profiles>
 </project>
