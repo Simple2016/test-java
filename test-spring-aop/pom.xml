@@ -10,9 +10,10 @@
     <name>test-spring-aop</name>
     <url>http://maven.apache.org</url>
 
-    <!--<properties>-->
-        <!--<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
-    <!--</properties>-->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <aspectj.version>1.7.3</aspectj.version>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -108,5 +109,52 @@
         </dependency>
         <!-- logback end -->
         <!-- log end -->
+
+        <!-- perf4j -->
+        <dependency>
+            <groupId>org.perf4j</groupId>
+            <artifactId>perf4j</artifactId>
+            <version>0.9.16</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-jexl</groupId>
+            <artifactId>commons-jexl</artifactId>
+            <version>1.1</version>
+        </dependency>
     </dependencies>
+    <!--<build>-->
+        <!--<plugins>-->
+            <!--<plugin>-->
+                <!--<groupId>org.codehaus.mojo</groupId>-->
+                <!--<artifactId>aspectj-maven-plugin</artifactId>-->
+                <!--<version>1.7</version>-->
+                <!--<configuration>-->
+                    <!--<complianceLevel>1.7</complianceLevel>-->
+                    <!--<showWeaveInfo>true</showWeaveInfo>-->
+                    <!--<verbose>true</verbose>-->
+                    <!--<weaveDependencies>-->
+                        <!--<dependency>-->
+                            <!--<groupId>org.perf4j</groupId>-->
+                            <!--<artifactId>perf4j</artifactId>-->
+                        <!--</dependency>-->
+                    <!--</weaveDependencies>-->
+                <!--</configuration>-->
+                <!--<dependencies>-->
+                    <!--<dependency>-->
+                        <!--<groupId>org.aspectj</groupId>-->
+                        <!--<artifactId>aspectjtools</artifactId>-->
+                        <!--<version>${aspectj.version}</version>-->
+                    <!--</dependency>-->
+                <!--</dependencies>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<goals>-->
+                            <!--<goal>compile</goal>&lt;!&ndash; use this goal to weave all your main classes &ndash;&gt;-->
+                            <!--<goal>test-compile</goal>&lt;!&ndash; use this goal to weave all your test classes &ndash;&gt;-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
+        <!--</plugins>-->
+    <!--</build>-->
 </project>

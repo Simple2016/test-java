@@ -9,9 +9,8 @@ public class TestService {
         System.out.println("add person " + personName);
     }
 
-    public boolean deletePerson(String personName) {
+    public void deletePerson(String personName) {
         System.out.println("delete person " + personName);
-        return true;
     }
 
     public void editPerson(String personName) {
