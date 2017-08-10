@@ -1,4 +1,4 @@
-package lqw.test.test_perf4j;
+package lqw.test;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

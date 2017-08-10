@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "./log4j.dtd" >
+<log4j:configuration>
+
+    <appender name="console" class="org.apache.log4j.ConsoleAppender">
+        <param name="Threshold" value="debug"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{ABSOLUTE} %5p %c{1}:%L - %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- perf4j的Logger及Appender -->
+    <!-- Perf4J appenders -->
+    <!-- AsyncCoalescingStatisticsAppender收集StopWatch的日志信息并传送到下游的文件appenders。 -->
+    <appender name="CoalescingStatistics"
+              class="org.perf4j.log4j.AsyncCoalescingStatisticsAppender">
+        <!-- TimeSlice配置多少时间间隔去做一次汇总写入文件中 默认值是 30000 ms ,设置为10分钟-->
+        <param name="TimeSlice" value="3600000" />
+        <appender-ref ref="performanceAppenderCSV" /><appender-ref ref="performanceAppenderLOG" />
+    </appender>
+    <!-- 把汇总的perf4j的日志信息写到./logs/perfmance/perfmance.log文件中去 -->
+    <appender name="performanceAppenderLOG" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./logs/perfmance/perfmance.log" />
+        <param name="Append" value="true" />                                              <!-- 设置是否在重新启动服务时，在原有日志的基础添加新日志 -->
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%m%n" />
+        </layout>
+    </appender>
+    <appender name="performanceAppenderCSV" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./logs/perfmance/perfmance.csv" />
+        <param name="Append" value="true" />                                              <!-- 设置是否在重新启动服务时，在原有日志的基础添加新日志 -->
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.csv'" />
+        <layout class="org.perf4j.log4j.StatisticsCsvLayout">
+            <param name="ConversionPattern" value="%m%n" />
+        </layout>
+    </appender>
+    <!-- 11、perf4j日志记录器org.perf4j.TimingLogger 日志记录在./logs/performance/目录下 -->
+    <logger name="org.perf4j.TimingLogger" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="CoalescingStatistics" />
+    </logger>
+
+    <!-- 注意root logger appender 标签的顺序 -->
+    <root>
+        <priority value="debug"></priority>
+        <appender-ref ref="console"/>
+    </root>
+</log4j:configuration>
