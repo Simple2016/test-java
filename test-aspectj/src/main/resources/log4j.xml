@@ -9,36 +9,83 @@
         </layout>
     </appender>
 
-    <!-- perf4j的Logger及Appender -->
     <!-- Perf4J appenders -->
-    <!-- AsyncCoalescingStatisticsAppender收集StopWatch的日志信息并传送到下游的文件appenders。 -->
+    <!--
+       This AsyncCoalescingStatisticsAppender groups StopWatch log messages
+       into GroupedTimingStatistics messages which it sends on the
+       file appender defined below
+    -->
     <appender name="CoalescingStatistics"
               class="org.perf4j.log4j.AsyncCoalescingStatisticsAppender">
-        <!-- TimeSlice配置多少时间间隔去做一次汇总写入文件中 默认值是 30000 ms ,设置为10分钟-->
-        <param name="TimeSlice" value="3600000" />
-        <appender-ref ref="performanceAppenderCSV" /><appender-ref ref="performanceAppenderLOG" />
+        <!--
+          The TimeSlice option is used to determine the time window for which
+          all received StopWatch logs are aggregated to create a single
+          GroupedTimingStatistics log. Here we set it to 10 seconds, overrid-ing
+          the default of 30000 ms
+        -->
+        <param name="TimeSlice" value="10000"/>
+        <appender-ref ref="fileAppender"/>
+        <appender-ref ref="graphExecutionTimes"/>
+        <appender-ref ref="graphExecutionTPS"/>
+
     </appender>
-    <!-- 把汇总的perf4j的日志信息写到./logs/perfmance/perfmance.log文件中去 -->
-    <appender name="performanceAppenderLOG" class="org.apache.log4j.FileAppender">
-        <param name="File" value="./logs/perfmance/perfmance.log" />
-        <param name="Append" value="true" />                                              <!-- 设置是否在重新启动服务时，在原有日志的基础添加新日志 -->
-        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%m%n" />
-        </layout>
-    </appender>
-    <appender name="performanceAppenderCSV" class="org.apache.log4j.FileAppender">
-        <param name="File" value="./logs/perfmance/perfmance.csv" />
-        <param name="Append" value="true" />                                              <!-- 设置是否在重新启动服务时，在原有日志的基础添加新日志 -->
-        <param name="DatePattern" value="'.'yyyy-MM-dd'.csv'" />
+
+    <!-- This file appender is used to output aggregated performance statis-tics -->
+    <appender name="fileAppender" class="org.apache.log4j.FileAppender">
+        <param name="File" value="logs/perfStats.log"/>
         <layout class="org.perf4j.log4j.StatisticsCsvLayout">
-            <param name="ConversionPattern" value="%m%n" />
+            <param name="Columns" value="tag,start,stop,mean,count,tps"/>
         </layout>
     </appender>
-    <!-- 11、perf4j日志记录器org.perf4j.TimingLogger 日志记录在./logs/performance/目录下 -->
+
+
+    <!--
+  This first GraphingStatisticsAppender graphs Mean execution times for the
+  firstBlock and secondBlock tags
+-->
+    <appender name="graphExecutionTimes"
+              class="org.perf4j.log4j.GraphingStatisticsAppender">
+        <!-- Possible GraphTypes are Mean, Min, Max, StdDev, Count and TPS -->
+        <param name="GraphType" value="Mean"/>
+        <!-- The tags of the timed execution blocks to graph are specified here -->
+        <param name="TagNamesToGraph" value="test,test1,test2"/>
+        <appender-ref ref="graphsFileAppender"/>
+    </appender>
+
+    <!--
+      This second GraphingStatisticsAppender graphs transactions per second
+      for the firstBlock and secondBlock tags
+    -->
+    <appender name="graphExecutionTPS"
+              class="org.perf4j.log4j.GraphingStatisticsAppender">
+        <param name="GraphType" value="TPS"/>
+        <param name="TagNamesToGraph" value="test,test1,test2"/>
+        <appender-ref ref="graphsFileAppender"/>
+    </appender>
+
+    <!--
+      This file appender is used to output the graph URLs generated
+      by the GraphingStatisticsAppenders
+    -->
+    <appender name="graphsFileAppender" class="org.apache.log4j.FileAppender">
+        <param name="File" value="logs/perfGraphs.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%m%n"/>
+        </layout>
+    </appender>
+
+    <!-- Loggers -->
+    <!--
+      The Perf4J logger. Note that org.perf4j.TimingLogger is the value of the
+      org.perf4j.StopWatch.DEFAULT_LOGGER_NAME constant. Also, note that
+      additivity is set to false, which is usually what is desired - this means
+      that timing statements will only be sent to this logger and NOT to
+      upstream loggers.
+    -->
     <logger name="org.perf4j.TimingLogger" additivity="false">
-        <level value="INFO" />
-        <appender-ref ref="CoalescingStatistics" />
+        <level value="INFO"/>
+        <appender-ref ref="CoalescingStatistics"/>
+        <appender-ref ref="console"/>
     </logger>
 
     <!-- 注意root logger appender 标签的顺序 -->

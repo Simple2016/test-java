@@ -8,13 +8,13 @@ import org.aspectj.lang.annotation.Pointcut;
 /**
  * Created by liqw on 2017/8/8.
  */
-//@Aspect
+@Aspect
 public class MyAspect {
-//    @Pointcut("execution(@DebugTrace * *..*.*(..))")
+    @Pointcut("execution(@DebugTrace * *..*.*(..))")
     public void DebugTraceMethod() {
     }
 
-//    @Before("DebugTraceMethod()")
+    @Before("DebugTraceMethod()")
     public void beforeDebugTraceMethod(JoinPoint joinPoint) {
         String key = joinPoint.getSignature().toString();
         System.out.println("beforeDebugTraceMethod: " + key);
