@@ -24,6 +24,7 @@
             <groupId>org.perf4j</groupId>
             <artifactId>perf4j</artifactId>
             <version>0.9.16</version>
+            <classifier>log4jonly</classifier>
         </dependency>
         <dependency>
             <groupId>commons-jexl</groupId>
@@ -73,6 +74,7 @@
                         <dependency>
                             <groupId>org.perf4j</groupId>
                             <artifactId>perf4j</artifactId>
+                            <classifier>log4jonly</classifier>
                         </dependency>
                     </weaveDependencies>
                 </configuration>
