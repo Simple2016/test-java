@@ -5,100 +5,91 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.Exchanger;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
 
 /**
  * Created by liqw on 2017/9/23.
  */
 public class TestServer {
-    final static ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(1);
-    final static Exchanger<String> EXCHANGER = new Exchanger<>();
-    final static Semaphore semaphore = new Semaphore(1);
 
     public static void main(String[] args) throws Exception {
+        final ServerSocket serviceServer = new ServerSocket(777);//为客户端提供连接服务
+        final ServerSocket dataServer = new ServerSocket(888);//为客户端提供数据传输服务
+        final ServerSocket localServer = new ServerSocket(999);//本地服务器，接收外部请求
+        while (true) {
+            System.out.println("等待客户端握手");
+            Socket server = serviceServer.accept();
+            System.out.println("hello,client" + server.getRemoteSocketAddress());
+            final OutputStream outputStream = server.getOutputStream();
 
+            try {
 
-//        for (; ; ) {
-
-        EXECUTOR_SERVICE.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    ServerSocket serverSocket = new ServerSocket(888);
-                    ServerSocket serverSocket2 = new ServerSocket(999);
-                    while (true) {
-                        System.out.println("等待客户端");
-                        final Socket accept = serverSocket.accept();
-                        System.out.println("客户端已连接");
-                        System.out.println("等待外部请求");
-                        final Socket server = serverSocket2.accept();
-                        serverTransfer(accept, server);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                while (true) {
+                    System.out.println("等待外部请求");
+                    final Socket localServerAccept = localServer.accept();
+                    System.out.println("请客户端接收数据");
+                    outputStream.write(1);
+                    final Socket dataServerAccept = dataServer.accept();
+                    System.out.println("客户端已建立数据连接");
+                    serverTransfer(dataServerAccept, localServerAccept);
                 }
+            } catch (IOException e) {
+                //e.printStackTrace();
+                System.out.println("客户端已断开");
             }
-        });
-//        }
+        }
 
     }
 
-    private static void serverTransfer(final Socket accept, final Socket server) {
+    private static void serverTransfer(final Socket dataServerAccept, final Socket localServerAccept) {
 
         try {
+            final InputStream data_in = dataServerAccept.getInputStream();
+            final OutputStream data_out = dataServerAccept.getOutputStream();
 
-
-            final InputStream in = accept.getInputStream();
-            final OutputStream out = accept.getOutputStream();
-
-            final InputStream service_in = server.getInputStream();
-            final OutputStream service_out = server.getOutputStream();
+            final InputStream local_in = localServerAccept.getInputStream();
+            final OutputStream local_out = localServerAccept.getOutputStream();
 
             final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(2);
             EXECUTOR_SERVICE.execute(new Runnable() {
                 @Override
                 public void run() {
                     try {
-
-                        System.out.println("读取外部请求数据");
+                        System.out.println(Thread.currentThread().getName() + "数据读取启动");
                         byte[] buffer = new byte[1024];
                         int len = -1;
-                        while ((len = service_in.read(buffer)) != -1) {
-                            out.write(buffer, 0, len);
+                        while ((len = local_in.read(buffer)) != -1) {
+                            data_out.write(buffer, 0, len);
                         }
-
-
                     } catch (IOException e) {
-                        e.printStackTrace();
-                        closeTransferStream(in, out, service_in, service_out);
+//                        e.printStackTrace();
+                        closeTransferStream(data_in, data_out, local_in, local_out);
                     }
-                    closeTransferStream(in, out, service_in, service_out);
-                    System.out.println("外部请求连接已断开");
+                    closeTransferStream(data_in, data_out, local_in, local_out);
+                    System.out.println(Thread.currentThread().getName() + "数据读取关闭");
                 }
             });
             EXECUTOR_SERVICE.execute(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        System.out.println("读取客户端数据");
+                        System.out.println(Thread.currentThread().getName() + "本地返回启动");
                         byte[] buffer = new byte[1024];
                         int len = -1;
-                        while ((len = in.read(buffer)) != -1) {
-                            service_out.write(buffer, 0, len);
+                        while ((len = data_in.read(buffer)) != -1) {
+                            local_out.write(buffer, 0, len);
                         }
 
                     } catch (IOException e) {
-                        e.printStackTrace();
-                        closeTransferStream(in, out, service_in, service_out);
+//                        e.printStackTrace();
+                        closeTransferStream(data_in, data_out, local_in, local_out);
                     }
-                    closeTransferStream(in, out, service_in, service_out);
-                    System.out.println("客户端连接已断开");
+                    closeTransferStream(data_in, data_out, local_in, local_out);
+                    System.out.println(Thread.currentThread().getName() + "本地返回关闭");
                 }
             });
-
+            EXECUTOR_SERVICE.shutdown();
         } catch (IOException e) {
             e.printStackTrace();
         }
