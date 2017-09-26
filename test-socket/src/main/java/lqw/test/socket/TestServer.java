@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -18,25 +20,26 @@ public class TestServer {
         final ServerSocket dataServer = new ServerSocket(888);//为客户端提供数据传输服务
         final ServerSocket localServer = new ServerSocket(999);//本地服务器，接收外部请求
         while (true) {
-            System.out.println("等待客户端握手");
+            print("等待客户端握手/wait client");
             Socket server = serviceServer.accept();
-            System.out.println("hello,client" + server.getRemoteSocketAddress());
+            print("hello,client" + server.getRemoteSocketAddress());
             final OutputStream outputStream = server.getOutputStream();
 
             try {
 
                 while (true) {
-                    System.out.println("等待外部请求");
+                    print("等待外部请求/wait request");
                     final Socket localServerAccept = localServer.accept();
-                    System.out.println("请客户端接收数据");
+                    print("请客户端接收数据/connect client data");
                     outputStream.write(1);
+                    outputStream.flush();
                     final Socket dataServerAccept = dataServer.accept();
-                    System.out.println("客户端已建立数据连接");
+                    print("客户端已建立数据连接/client data connected");
                     serverTransfer(dataServerAccept, localServerAccept);
                 }
             } catch (IOException e) {
                 //e.printStackTrace();
-                System.out.println("客户端已断开");
+                print("客户端已断开/client disconnected");
             }
         }
 
@@ -56,7 +59,7 @@ public class TestServer {
                 @Override
                 public void run() {
                     try {
-                        System.out.println(Thread.currentThread().getName() + "数据读取启动");
+                        print(Thread.currentThread().getName() + "数据读取启动/data read start");
                         byte[] buffer = new byte[1024];
                         int len = -1;
                         while ((len = local_in.read(buffer)) != -1) {
@@ -67,14 +70,14 @@ public class TestServer {
                         closeTransferStream(data_in, data_out, local_in, local_out);
                     }
                     closeTransferStream(data_in, data_out, local_in, local_out);
-                    System.out.println(Thread.currentThread().getName() + "数据读取关闭");
+                    print(Thread.currentThread().getName() + "数据读取关闭/data read close");
                 }
             });
             EXECUTOR_SERVICE.execute(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        System.out.println(Thread.currentThread().getName() + "本地返回启动");
+                        print(Thread.currentThread().getName() + "本地返回启动/local response start");
                         byte[] buffer = new byte[1024];
                         int len = -1;
                         while ((len = data_in.read(buffer)) != -1) {
@@ -86,7 +89,7 @@ public class TestServer {
                         closeTransferStream(data_in, data_out, local_in, local_out);
                     }
                     closeTransferStream(data_in, data_out, local_in, local_out);
-                    System.out.println(Thread.currentThread().getName() + "本地返回关闭");
+                    print(Thread.currentThread().getName() + "本地返回关闭/local response close");
                 }
             });
             EXECUTOR_SERVICE.shutdown();
@@ -104,6 +107,10 @@ public class TestServer {
         } catch (IOException e1) {
             e1.printStackTrace();
         }
+    }
+
+    private static void print(String s) {
+        System.out.println(new SimpleDateFormat("[yyyyMMdd hh:mm:ss]").format(new Date()) + s);
     }
 
 
