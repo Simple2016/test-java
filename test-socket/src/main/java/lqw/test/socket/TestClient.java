@@ -18,6 +18,7 @@ import java.util.concurrent.Semaphore;
  */
 public class TestClient {
     private static String serverHost = "104.194.79.49";//服务器地址
+//    private static String serverHost = "127.0.0.1";//服务器地址
     private static int servicePort = 777;//建立连接端口（由服务器端代码设置）
     private static int serverPort = 888;//数据传输端口（由服务器端代码设置）
     //    private static String localHost = "192.168.1.250";//本地映射的地址
@@ -26,30 +27,44 @@ public class TestClient {
 
 
     public static void main(String[] args) throws Exception {
-        print("与服务器握手");
-        final Socket service = new Socket(serverHost, servicePort);
-        print("hello,server");
-        InputStream inputStream = service.getInputStream();
-        int i;
-        while ((i = inputStream.read()) > -1) {
-            print("服务器请我获取数据：" + i);
-            Socket data = null;
-
-            while (true) {
-                try {
-                    data = new Socket(serverHost, serverPort);
-                } catch (ConnectException e) {
-
-                }
-                if (data != null) {
-                    break;
-                }
-                print("数据连接建立失败，10s后重试");
-                Thread.sleep(10000);
+        while (true) {
+            Socket service = null;
+            try {
+                print("与服务器握手");
+                service = new Socket(serverHost, servicePort);
+            } catch (ConnectException e) {
             }
+            if (service == null) {
+                print("握手失败，10s后重试");
+                Thread.sleep(10000);
+                continue;
+            }
+            print("hello,server");
+            InputStream inputStream = service.getInputStream();
+            int i;
+            try {
+                while ((i = inputStream.read()) > -1) {
+                    print("服务器请我获取数据：" + i);
+                    Socket data = null;
+                    while (true) {
+                        try {
+                            data = new Socket(serverHost, serverPort);
+                        } catch (ConnectException e) {
 
-            localTransfer(data);
-            print("数据连接已建立");
+                        }
+                        if (data != null) {
+                            break;
+                        }
+                        print("数据连接建立失败，10s后重试");
+                        Thread.sleep(10000);
+                    }
+
+                    localTransfer(data);
+                    print("数据连接已建立");
+                }
+            } catch (Exception e) {
+                print("服务器端已断开");
+            }
         }
     }
 

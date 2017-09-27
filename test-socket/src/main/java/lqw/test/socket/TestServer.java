@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
@@ -19,6 +20,8 @@ public class TestServer {
         final ServerSocket serviceServer = new ServerSocket(777);//为客户端提供连接服务
         final ServerSocket dataServer = new ServerSocket(888);//为客户端提供数据传输服务
         final ServerSocket localServer = new ServerSocket(999);//本地服务器，接收外部请求
+        dataServer.setSoTimeout(5000);
+
         while (true) {
             print("等待客户端握手/wait client");
             Socket server = serviceServer.accept();
@@ -26,10 +29,11 @@ public class TestServer {
             final OutputStream outputStream = server.getOutputStream();
 
             try {
-
                 while (true) {
                     print("等待外部请求/wait request");
-                    final Socket localServerAccept = localServer.accept();
+                    Socket localServerAccept = null;
+                    localServerAccept = localServer.accept();
+                    print("获得请求/get request from:"+localServerAccept.getRemoteSocketAddress());
                     print("请客户端接收数据/connect client data");
                     outputStream.write(1);
                     outputStream.flush();
