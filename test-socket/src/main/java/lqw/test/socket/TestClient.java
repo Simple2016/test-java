@@ -5,20 +5,18 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ConnectException;
 import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.SocketTimeoutException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.Exchanger;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
 
 /**
  * Created by liqw on 2017/9/23.
  */
 public class TestClient {
     private static String serverHost = "104.194.79.49";//服务器地址
-//    private static String serverHost = "127.0.0.1";//服务器地址
+    //    private static String serverHost = "127.0.0.1";//服务器地址
     private static int servicePort = 777;//建立连接端口（由服务器端代码设置）
     private static int serverPort = 888;//数据传输端口（由服务器端代码设置）
     //    private static String localHost = "192.168.1.250";//本地映射的地址
@@ -32,6 +30,7 @@ public class TestClient {
             try {
                 print("与服务器握手");
                 service = new Socket(serverHost, servicePort);
+                service.setSoTimeout(60000);
             } catch (ConnectException e) {
             }
             if (service == null) {
@@ -39,8 +38,10 @@ public class TestClient {
                 Thread.sleep(10000);
                 continue;
             }
-            print("hello,server");
+            OutputStream outputStream = service.getOutputStream();
             InputStream inputStream = service.getInputStream();
+            outputStream.write("hello\r\n".getBytes());
+            print("hello,server");
             int i;
             try {
                 while ((i = inputStream.read()) > -1) {
@@ -62,6 +63,8 @@ public class TestClient {
                     localTransfer(data);
                     print("数据连接已建立");
                 }
+            } catch (SocketTimeoutException e) {
+                print("超时");
             } catch (Exception e) {
                 print("服务器端已断开");
             }

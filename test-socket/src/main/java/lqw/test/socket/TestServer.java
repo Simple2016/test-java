@@ -1,8 +1,6 @@
 package lqw.test.socket;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -21,19 +19,27 @@ public class TestServer {
         final ServerSocket dataServer = new ServerSocket(888);//为客户端提供数据传输服务
         final ServerSocket localServer = new ServerSocket(999);//本地服务器，接收外部请求
         dataServer.setSoTimeout(5000);
+        localServer.setSoTimeout(61000);
 
         while (true) {
             print("等待客户端握手/wait client");
             Socket server = serviceServer.accept();
             print("hello,client" + server.getRemoteSocketAddress());
-            final OutputStream outputStream = server.getOutputStream();
-
+            OutputStream outputStream = server.getOutputStream();
+            InputStream inputStream = server.getInputStream();
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            try {
+                String s = new BufferedReader(inputStreamReader).readLine();
+                print(s);
+            } catch (Exception e) {
+                continue;
+            }
             try {
                 while (true) {
                     print("等待外部请求/wait request");
                     Socket localServerAccept = null;
                     localServerAccept = localServer.accept();
-                    print("获得请求/get request from:"+localServerAccept.getRemoteSocketAddress());
+                    print("获得请求/get request from:" + localServerAccept.getRemoteSocketAddress());
                     print("请客户端接收数据/connect client data");
                     outputStream.write(1);
                     outputStream.flush();
