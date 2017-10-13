@@ -6,10 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-/**
- * Created by guoys on 2017/2/15.
- */
-public final class JsonUtils {
+public final class GsonUtils {
 
     public static <T> T fromJson(String jsonStr, Class<? extends T> clazz){
         GsonBuilder gsonBuilder = new GsonBuilder();
