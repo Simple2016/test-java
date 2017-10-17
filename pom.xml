@@ -23,7 +23,6 @@
         <module>test-log4j</module>
         <module>test-logback</module>
         <module>test-object</module>
-        <module>test-perf4j</module>
         <module>test-redis</module>
         <module>test-regex</module>
         <module>test-spring</module>
@@ -42,10 +41,11 @@
         <module>test-httpclient</module>
         <module>test-jetty-7</module>
         <module>test-jetty-9</module>
-        <module>test-observer</module>
+        <module>test-model-observer</module>
         <module>test-util</module>
-        <module>test-bug</module>
         <module>test-aspectj</module>
+        <module>webtest-react</module>
+        <module>test-email</module>
     </modules>
     <profiles>
         <profile>
