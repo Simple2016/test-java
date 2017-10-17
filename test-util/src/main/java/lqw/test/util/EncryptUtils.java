@@ -1,4 +1,4 @@
-package lqw.test.test_jmeter.utils;
+package lqw.test.util;
 
 import java.nio.charset.Charset;
 import java.security.MessageDigest;

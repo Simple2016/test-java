@@ -1,4 +1,4 @@
-package lqw.test.test_jmeter.utils;
+package lqw.test.util;
 
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
