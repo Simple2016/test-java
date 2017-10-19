@@ -46,7 +46,32 @@
         <module>test-aspectj</module>
         <module>webtest-react</module>
         <module>test-email</module>
+        <module>test-cache</module>
     </modules>
+    <dependencies>
+        <!-- log start -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.7</version>
+        </dependency>
+
+        <!-- logback start -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.7</version>
+        </dependency>
+        <!-- logback end -->
+        <!-- log end -->
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.4</version>
+        </dependency>
+
+    </dependencies>
     <profiles>
         <profile>
             <id>jdk-1.7</id>
