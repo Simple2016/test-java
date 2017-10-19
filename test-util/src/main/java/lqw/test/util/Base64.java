@@ -136,7 +136,7 @@ public class Base64 {
 	 * Encode using Base64-like encoding that is URL- and Filename-safe as
 	 * described in Section 4 of RFC3548:
 	 * <a href="http://www.faqs.org/rfcs/rfc3548.html">http://www.faqs.org/rfcs/
-	 * rfc3548.html</a>. It is important to note that data encoded this way is
+	 * rfc3548.static</a>. It is important to note that data encoded this way is
 	 * <em>not</em> officially valid Base64, or at the very least should not be
 	 * called Base64 without also specifying that is was encoded using the URL-
 	 * and Filename-safe dialect.
@@ -146,7 +146,7 @@ public class Base64 {
 	/**
 	 * Encode using the special "ordered" dialect of Base64 described here:
 	 * <a href="http://www.faqs.org/qa/rfcc-1940.html">http://www.faqs.org/qa/
-	 * rfcc-1940.html</a>.
+	 * rfcc-1940.static</a>.
 	 */
 	public final static int ORDERED = 32;
 
@@ -251,7 +251,7 @@ public class Base64 {
 	 * Used in the URL- and Filename-safe dialect described in Section 4 of
 	 * RFC3548:
 	 * <a href="http://www.faqs.org/rfcs/rfc3548.html">http://www.faqs.org/rfcs/
-	 * rfc3548.html</a>. Notice that the last two bytes become "hyphen" and
+	 * rfc3548.static</a>. Notice that the last two bytes become "hyphen" and
 	 * "underscore" instead of "plus" and "slash."
 	 */
 	private final static byte[] _URL_SAFE_ALPHABET = { (byte) 'A', (byte) 'B', (byte) 'C', (byte) 'D', (byte) 'E',
@@ -326,7 +326,7 @@ public class Base64 {
 	/**
 	 * I don't get the point of this technique, but it is described here:
 	 * <a href="http://www.faqs.org/qa/rfcc-1940.html">http://www.faqs.org/qa/
-	 * rfcc-1940.html</a>.
+	 * rfcc-1940.static</a>.
 	 */
 	private final static byte[] _ORDERED_ALPHABET = { (byte) '-', (byte) '0', (byte) '1', (byte) '2', (byte) '3',
 			(byte) '4', (byte) '5', (byte) '6', (byte) '7', (byte) '8', (byte) '9', (byte) 'A', (byte) 'B', (byte) 'C',
