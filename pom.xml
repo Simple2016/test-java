@@ -47,6 +47,7 @@
         <module>webtest-react</module>
         <module>test-email</module>
         <module>test-cache</module>
+        <module>webtest-spring-security</module>
     </modules>
     <dependencies>
         <!-- log start -->
@@ -62,6 +63,18 @@
             <artifactId>logback-classic</artifactId>
             <version>1.1.7</version>
         </dependency>
+        <!--spring need-->
+        <dependency>
+            <groupId>org.logback-extensions</groupId>
+            <artifactId>logback-ext-spring</artifactId>
+            <version>0.1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>1.7.8</version>
+        </dependency>
+        <!--spring need-->
         <!-- logback end -->
         <!-- log end -->
 
